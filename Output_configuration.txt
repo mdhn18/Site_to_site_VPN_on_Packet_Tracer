@@ -1,0 +1,241 @@
+#############################################################
+
+
+Router>enable
+Router#
+Router#configure terminal
+Enter configuration commands, one per line.  End with CNTL/Z.
+Router(config)#interface GigabitEthernet0/1
+Router(config-if)#ip address 192.168.3.1 255.255.255.0
+Router(config-if)#ip address 192.168.3.1 255.255.255.0
+Router(config-if)#no ip address
+Router(config-if)#
+Router(config-if)#exit
+Router(config)#interface GigabitEthernet0/1
+Router(config-if)#ip address 192.168.1.1 255.255.255.0
+Router(config-if)#ip address 192.168.1.1 255.255.255.0
+Router(config-if)#no shut
+
+Router(config-if)#
+%LINK-5-CHANGED: Interface GigabitEthernet0/1, changed state to up
+
+%LINEPROTO-5-UPDOWN: Line protocol on Interface GigabitEthernet0/1, changed state to up
+
+Router(config-if)#ip dhcp pool r11
+Router(dhcp-config)#network 192.168.1.1 255.255.255.0
+Router(dhcp-config)#exit
+Router(config)#
+Router(config)#%DHCPD-4-PING_CONFLICT: DHCP address conflict:  server pinged 192.168.1.1.
+
+Router(config)#interface GigabitEthernet0/1
+Router(config-if)#
+Router(config-if)#exit
+Router(config)#interface GigabitEthernet0/0
+Router(config-if)#ip address 209.165.100.1 255.255.255.0
+Router(config-if)#ip address 209.165.100.1 255.255.255.0
+Router(config-if)#no shutdown
+Router(config-if)#
+%LINK-5-CHANGED: Interface GigabitEthernet0/0, changed state to up
+
+%LINEPROTO-5-UPDOWN: Line protocol on Interface GigabitEthernet0/0, changed state to up
+
+Router(config-if)#
+Router(config-if)#exit
+Router(config)#ip route 0.0.0.0 0.0.0.0 209.165.100.2
+Router(config)#
+
+R1>en
+R1#conf t
+Enter configuration commands, one per line.  End with CNTL/Z.
+R1(config)#license boot module c1900 tech
+R1(config)#license boot module c1900 technology-package sec
+R1(config)#license boot module c1900 technology-package securityk9 
+R1#copy run start
+R1#copy run start
+Destination filename [startup-config]? 
+Building configuration...
+[OK]
+R1#reload
+
+Router>
+Router>en
+Router#conf t
+Enter configuration commands, one per line.  End with CNTL/Z.
+Router(config)#
+Router(config)#hostname R1
+R1(config)#
+R1(config)#access-list 100 permit ip 192.168.1.0 0.0.0.255 192.168.3.0 0.0.0.255
+R1(config)#crypto isakmp policy 10
+R1(config-isakmp)# encryption aes 256
+R1(config-isakmp)# authentication pre-share
+R1(config-isakmp)# group 5
+R1(config-isakmp)#exit
+R1(config)#crypto isakmp key secretkey address 209.165.200.1
+R1(config)#crypto ipsec transform-set R1-R2 esp-aes 256 esp-sha-hmac
+R1(config)#crypto map IPSEC-MAP 10 ipsec-isakmp 
+% NOTE: This new crypto map will remain disabled until a peer
+        and a valid access list have been configured.
+R1(config-crypto-map)# set peer 209.165.200.1
+R1(config-crypto-map)# set pfs group5
+R1(config-crypto-map)# set security-association lifetime seconds 86400
+R1(config-crypto-map)# set transform-set R1-R2 
+R1(config-crypto-map)# match address 100
+R1(config-crypto-map)#int g0/0
+R1(config-if)#crypto map IPSEC-MAP
+*Jan  3 07:16:26.785: %CRYPTO-6-ISAKMP_ON_OFF: ISAKMP is ON
+R1(config-if)#
+
+###############################################################################
+
+
+ISP router
+
+
+Router>enable
+Router#
+Router#configure terminal
+Enter configuration commands, one per line.  End with CNTL/Z.
+Router(config)#interface GigabitEthernet0/0/1
+Router(config-if)#ip address 209.165.100.2 255.255.255.0
+Router(config-if)#ip address 209.165.100.2 255.255.255.0
+Router(config-if)#no shutdown
+Router(config-if)#
+%LINK-5-CHANGED: Interface GigabitEthernet0/0/1, changed state to up
+
+%LINEPROTO-5-UPDOWN: Line protocol on Interface GigabitEthernet0/0/1, changed state to up
+
+Router(config-if)#exit
+Router(config)#interface GigabitEthernet0/0/1
+Router(config-if)#
+Router(config-if)#exit
+Router(config)#interface GigabitEthernet0/0/0
+Router(config-if)#ip address 209.165.200.2 255.255.255.0
+Router(config-if)#ip address 209.165.200.2 255.255.255.0
+Router(config-if)#no shutdown
+Router(config-if)#
+%LINK-5-CHANGED: Interface GigabitEthernet0/0/0, changed state to up
+
+%LINEPROTO-5-UPDOWN: Line protocol on Interface GigabitEthernet0/0/0, changed state to up
+
+
+ISP(config-if)#
+%LINK-5-CHANGED: Interface GigabitEthernet0/1, changed state to up
+
+ISP(config-if)#exit
+ISP(config)#exit
+ISP#
+%SYS-5-CONFIG_I: Configured from console by console
+
+ISP#
+
+########################################################
+
+Router 2 stockholm site 
+
+Router>enable
+Router#
+Router#configure terminal
+Enter configuration commands, one per line.  End with CNTL/Z.
+Router(config)#interface GigabitEthernet0/1
+Router(config-if)#no ip address
+Router(config-if)#no ip address
+Router(config-if)#no ip address
+Router(config-if)#no shutdown
+Router(config-if)#
+%LINK-5-CHANGED: Interface GigabitEthernet0/1, changed state to up
+
+%LINEPROTO-5-UPDOWN: Line protocol on Interface GigabitEthernet0/1, changed state to up
+no ip address
+Router(config-if)#
+Router(config-if)#exit
+Router(config)#interface GigabitEthernet0/1
+Router(config-if)#no ip address
+Router(config-if)#ip address 192.168.3.1 255.255.255.0
+Router(config-if)#ip address 192.168.3.1 255.255.255.0
+Router(config-if)#ip dhcp pool r1
+Router(dhcp-config)#network 192.168.3.1 255.255.255.0
+Router(dhcp-config)#
+Router(dhcp-config)#exit
+Router(config)#%DHCPD-4-PING_CONFLICT: DHCP address conflict:  server pinged 192.168.3.1.
+
+Router(config)#hostname R2
+R2(config)#
+R2(config)#interface GigabitEthernet0/1
+R2(config-if)#
+R2(config-if)#exit
+R2(config)#interface GigabitEthernet0/0
+R2(config-if)#ip address 209.165.200.1 255.255.255.0
+R2(config-if)#ip address 209.165.200.1 255.255.255.0
+R2(config-if)#no shutdown
+R2(config-if)#
+%LINK-5-CHANGED: Interface GigabitEthernet0/0, changed state to up
+
+%LINEPROTO-5-UPDOWN: Line protocol on Interface GigabitEthernet0/0, changed state to up
+
+R2(config-if)#exit
+R2(config)#ip route 0.0.0.0 0.0.0.0 209.165.200.2
+R2(config)#
+
+R2>en
+R2#conf t
+Enter configuration commands, one per line.  End with CNTL/Z.
+R2(config)#license boot module c1900 tech
+R2(config)#license boot module c1900 technology-package sec
+R2(config)#license boot module c1900 technology-package securityk9 
+R2#copy run start
+Destination filename [startup-config]? 
+Building configuration...
+[OK]
+R2#reload
+
+R2>
+R2>en
+R2#conf t
+Enter configuration commands, one per line.  End with CNTL/Z.
+R2(config)#access-list 100 permit ip 192.168.3.0 0.0.0.255 192.168.1.0 0.0.0.255
+R2(config)#
+R2(config)#
+R2(config)#crypto isakmp policy 10
+R2(config-isakmp)# encryption aes 256
+R2(config-isakmp)# authentication pre-share
+R2(config-isakmp)# group 5
+R2(config-isakmp)#exit
+R2(config)#crypto isakmp key secretkey address 209.165.100.1
+R2(config)#crypto ipsec transform-set R2-R1 esp-aes 256 esp-sha-hmac
+R2(config)#crypto map IPSEC-MAP 10 ipsec-isakmp 
+% NOTE: This new crypto map will remain disabled until a peer
+        and a valid access list have been configured.
+R2(config-crypto-map)# set peer 209.165.100.1
+R2(config-crypto-map)# set pfs group5
+R2(config-crypto-map)# set security-association lifetime seconds 86400
+R2(config-crypto-map)# set transform-set R2-R1 
+R2(config-crypto-map)# match address 100
+R2(config-crypto-map)#int g0/0
+R2(config-if)#crypto map IPSEC-MAP
+*Jan  3 07:16:26.785: %CRYPTO-6-ISAKMP_ON_OFF: ISAKMP is ON
+R2(config-if)#
+
+
+
+
+###########
+
+C:\>ping 192.168.3.2
+
+Pinging 192.168.3.2 with 32 bytes of data:
+
+Reply from 192.168.3.2: bytes=32 time<1ms TTL=126
+Reply from 192.168.3.2: bytes=32 time<1ms TTL=126
+Reply from 192.168.3.2: bytes=32 time<1ms TTL=126
+Reply from 192.168.3.2: bytes=32 time<1ms TTL=126
+
+Ping statistics for 192.168.3.2:
+    Packets: Sent = 4, Received = 4, Lost = 0 (0% loss),
+Approximate round trip times in milli-seconds:
+    Minimum = 0ms, Maximum = 0ms, Average = 0ms
+
+
+
+
+
+
