@@ -11,9 +11,11 @@
 5. int g0/0
     - apply the crypto map
 
+#############################################
 
+![](Screenshot 2022-02-02 0235462.png)
 
-################
+#############################################
 
 
 license boot module c1900 technology-package securityk9
