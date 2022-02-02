@@ -28,7 +28,7 @@ crypto isakmp policy 10
  ###
 crypto isakmp key secretkey address 209.165.200.1
 ##
-crypto ipsec transform-set R1-R3 esp-aes 256 esp-sha-hmac
+crypto ipsec transform-set R1-R2 esp-aes 256 esp-sha-hmac
 ##
 crypto map IPSEC-MAP 10 ipsec-isakmp 
  set peer 209.165.200.1
@@ -49,13 +49,13 @@ crypto isakmp policy 10
 ###
 crypto isakmp key secretkey address 209.165.100.1
 ##
-crypto ipsec transform-set R3-R1 esp-aes 256 esp-sha-hmac
+crypto ipsec transform-set R2-R1 esp-aes 256 esp-sha-hmac
 ##
 crypto map IPSEC-MAP 10 ipsec-isakmp 
  set peer 209.165.100.1
  set pfs group5
  set security-association lifetime seconds 86400
- set transform-set R3-R1 
+ set transform-set R2-R1 
  match address 100
 ##
 interface GigabitEthernet0/0
